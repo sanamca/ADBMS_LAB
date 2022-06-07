@@ -1,0 +1,92 @@
+1.Create a database named Employee. Create a collection named empDetails
+You can use any of the fields Name, Age ,e_mail, phone,salary
+> use emp
+switched to db emp
+> use Employee
+switched to db Employee
+> db.createCollection("empdetails");
+{ "ok" : 1 }
+i) Insert 5 documents in it using the different insert() methods and
+> db.empdetails.insert({"Name":"mohan",Age:23,"email":"mohan@gmail.com",phone:76568950,salary:32000});
+WriteResult({ "nInserted" : 1 })
+> db.empdetails.insert({"Name":"bhuvan",Age:23,"email":"bhuvan@gmail.com",phone:76568950,salary:92000});
+WriteResult({ "nInserted" : 1 })
+> db.empdetails.insert({"Name":"raju",Age:24,"email":"raju@gmail.com",phone:96568950,salary:92000});
+WriteResult({ "nInserted" : 1 })
+> db.empdetails.insert({"Name":"sithara",Age:22,"email":"sithara@gmail.com",phone:96568950,salary:12000});
+WriteResult({ "nInserted" : 1 })
+> db.empdetails.insert({"Name":"swetha",Age:22,"email":"swetha@gmail.com",phone:96565950,salary:16000});
+WriteResult({ "nInserted" : 1 })
+
+a) Find the details of employee whose name is mohan
+> db.empdetails.find({Name:"mohan"});
+{ "_id" : ObjectId("629ada2a5983f0df59580db3"), "Name" : "mohan", "Age" : 23, "email" : "mohan@gmail.com", "phone" : 76568950, "salary" : 32000 }
+
+b) Fetch the documents of employees whose salary &gt;=5000
+> db.empdetails.find({Age:{$gt:50000}});
+> db.empdetails.find({salary:{$gt:50000}});
+{ "_id" : ObjectId("629ada665983f0df59580db4"), "Name" : "bhuvan", "Age" : 23, "email" : "bhuvan@gmail.com", "phone" : 76568950, "salary" : 92000 }
+{ "_id" : ObjectId("629ada965983f0df59580db5"), "Name" : "raju", "Age" : 24, "email" : "raju@gmail.com", "phone" : 96568950, "salary" : 92000 }
+
+c) Find the documents of employees whose name starts with letter r
+> db.empdetails.find({Name:/^r/});
+{ "_id" : ObjectId("629ada965983f0df59580db5"), "Name" : "raju", "Age" : 24, "email" : "raju@gmail.com", "phone" : 96568950, "salary" : 92000 }
+
+
+d) Find the documents of employees whose name is not in mohan , raju, bhuvan
+> db.empdetails.find({Name:{$nin:["mohan","ram","bhuvan"]}});
+{ "_id" : ObjectId("629ada965983f0df59580db5"), "Name" : "raju", "Age" : 24, "email" : "raju@gmail.com", "phone" : 96568950, "salary" : 92000 }
+{ "_id" : ObjectId("629adabb5983f0df59580db6"), "Name" : "sithara", "Age" : 22, "email" : "sithara@gmail.com", "phone" : 96568950, "salary" : 12000 }
+{ "_id" : ObjectId("629adae05983f0df59580db7"), "Name" : "swetha", "Age" : 22, "email" : "swetha@gmail.com", "phone" : 96565950, "salary" : 16000 }
+
+
+e) Find the documents of employees whose names are mohan , raju, bhuvan
+> db.empdetails.find({Name:{$in:["mohan","ram","bhuvan"]}});
+{ "_id" : ObjectId("629ada2a5983f0df59580db3"), "Name" : "mohan", "Age" : 23, "email" : "mohan@gmail.com", "phone" : 76568950, "salary" : 32000 }
+{ "_id" : ObjectId("629ada665983f0df59580db4"), "Name" : "bhuvan", "Age" : 23, "email" : "bhuvan@gmail.com", "phone" : 76568950, "salary" : 92000 }
+
+
+f) Retrieve the details of employees whose age is less than 30. Display only the fields name, salary
+> db.empdetails.find({Age:{$lt:30}},{Name:1,salary:1});
+{ "_id" : ObjectId("629ada2a5983f0df59580db3"), "Name" : "mohan", "salary" : 32000 }
+{ "_id" : ObjectId("629ada665983f0df59580db4"), "Name" : "bhuvan", "salary" : 92000 }
+{ "_id" : ObjectId("629ada965983f0df59580db5"), "Name" : "raju", "salary" : 92000 }
+{ "_id" : ObjectId("629adabb5983f0df59580db6"), "Name" : "sithara", "salary" : 12000 }
+{ "_id" : ObjectId("629adae05983f0df59580db7"), "Name" : "swetha", "salary" : 16000 }
+
+
+g) Find the details of employees whose salary is &gt;5000 and age is &lt; 30
+> db.empdetails.find({$and:[{Age:{$lt:30}},{salary:{$gt:5000}}]});
+{ "_id" : ObjectId("629ada2a5983f0df59580db3"), "Name" : "mohan", "Age" : 23, "email" : "mohan@gmail.com", "phone" : 76568950, "salary" : 32000 }
+{ "_id" : ObjectId("629ada665983f0df59580db4"), "Name" : "bhuvan", "Age" : 23, "email" : "bhuvan@gmail.com", "phone" : 76568950, "salary" : 92000 }
+{ "_id" : ObjectId("629ada965983f0df59580db5"), "Name" : "raju", "Age" : 24, "email" : "raju@gmail.com", "phone" : 96568950, "salary" : 92000 }
+{ "_id" : ObjectId("629adabb5983f0df59580db6"), "Name" : "sithara", "Age" : 22, "email" : "sithara@gmail.com", "phone" : 96568950, "salary" : 12000 }
+{ "_id" : ObjectId("629adae05983f0df59580db7"), "Name" : "swetha", "Age" : 22, "email" : "swetha@gmail.com", "phone" : 96565950, "salary" : 16000 }
+
+
+h) Update the e-mail of employee whose name is mohan // findOneAndUpdate()
+> db.empdetails.update({Name:"mohan"},{$set:{email:"mohan@gmail.com"}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 0 })
+> db.empdetails.update({Name:"mohan"},{$set:{email:"neil@gmail.com"}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.empdetails.find();
+{ "_id" : ObjectId("629ada2a5983f0df59580db3"), "Name" : "mohan", "Age" : 23, "email" : "neil@gmail.com", "phone" : 76568950, "salary" : 32000 }
+{ "_id" : ObjectId("629ada665983f0df59580db4"), "Name" : "bhuvan", "Age" : 23, "email" : "bhuvan@gmail.com", "phone" : 76568950, "salary" : 92000 }
+{ "_id" : ObjectId("629ada965983f0df59580db5"), "Name" : "raju", "Age" : 24, "email" : "raju@gmail.com", "phone" : 96568950, "salary" : 92000 }
+{ "_id" : ObjectId("629adabb5983f0df59580db6"), "Name" : "sithara", "Age" : 22, "email" : "sithara@gmail.com", "phone" : 96568950, "salary" : 12000 }
+{ "_id" : ObjectId("629adae05983f0df59580db7"), "Name" : "swetha", "Age" : 22, "email" : "swetha@gmail.com", "phone" : 96565950, "salary" : 16000 }
+
+
+i) Delete all the documents of employees whose age&gt;56
+> db.empdetails.update({Name:"mohan"},{$set:{Age:57}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.empdetails.find();
+{ "_id" : ObjectId("629ada2a5983f0df59580db3"), "Name" : "mohan", "Age" : 57, "email" : "neil@gmail.com", "phone" : 76568950, "salary" : 32000 }
+{ "_id" : ObjectId("629ada665983f0df59580db4"), "Name" : "bhuvan", "Age" : 23, "email" : "bhuvan@gmail.com", "phone" : 76568950, "salary" : 92000 }
+{ "_id" : ObjectId("629ada965983f0df59580db5"), "Name" : "raju", "Age" : 24, "email" : "raju@gmail.com", "phone" : 96568950, "salary" : 92000 }
+{ "_id" : ObjectId("629adabb5983f0df59580db6"), "Name" : "sithara", "Age" : 22, "email" : "sithara@gmail.com", "phone" : 96568950, "salary" : 12000 }
+{ "_id" : ObjectId("629adae05983f0df59580db7"), "Name" : "swetha", "Age" : 22, "email" : "swetha@gmail.com", "phone" : 96565950, "salary" : 16000 }
+
+
+
+
